@@ -3,7 +3,7 @@ const logger=require("morgan")
 const mongo=require('mongoose')
 const path=require("path")
 const app=express()
-
+const RouterBook= require('./routers/book')
 
 
 app.set('view engine','ejs')
@@ -14,10 +14,7 @@ app.use(express.static(path.join(__dirname,'assets')))
 
 
 
-app.get("/",(req,res)=>{
-    res.render("index")
-
-})
+app.use("/",RouterBook)
 app.get("/contact",(req,res)=>{
     res.render("contact")
 
