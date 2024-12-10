@@ -4,6 +4,7 @@ const mongo=require('mongoose')
 const path=require("path")
 const app=express()
 const RouterBook= require('./routers/book')
+const RouterAuth= require('./routers/auth.route')
 
 
 app.set('view engine','ejs')
@@ -14,6 +15,8 @@ app.use(express.static(path.join(__dirname,'assets')))
 
 
 app.use("/",RouterBook)
+app.use("/",RouterAuth)
+
 
 
 app.get("/contact",(req,res)=>{
@@ -35,10 +38,6 @@ app.get("/login",(req,res)=>{
 
 })
 
-app.get("/register",(req,res)=>{
-    res.render("register")
-
-})
 
 
 
