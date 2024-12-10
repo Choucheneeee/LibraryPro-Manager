@@ -17,10 +17,9 @@ const url = process.env.MONGO_URI || 'mongodb+srv://chouchene:chouchene@cluster0
 const Book = mongoose.model('book', schemaBook);
 
 // Helper to Handle Mongoose Connection and Disconnection
-const connectToDB = () => mongoose.connect(url, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-});
+const connectToDB = () => mongoose.connect(url);
+console.log(url,'url');
+
 
 const disconnectFromDB = () => mongoose.disconnect();
 
@@ -29,7 +28,6 @@ exports.getallbooks = () => {
     return new Promise((resolve, reject) => {
         connectToDB()
             .then(() => {
-                console.log("Connected with DB");
                 return Book.find();
             })
             .then((books) => {

@@ -10,27 +10,29 @@ exports.getRegisterPage=(req,res)=>{
     console.log("Flash message:", errorMessage); // Debug log
     res.render('register',{
         verifUser:req.session.userId,
-        message:errorMessage
+        message:errorMessage|| null 
     })
     
     
 
 }
-exports.postRegisterPage=(req,res)=>{
+exports.postRegisterPage = (req, res) => {
     if (!req.body.name || !req.body.email || !req.body.password) {
-        return res.status(400).send('All fields are required');
+        req.flash('error', 'All fields are required')[0];
+        return res.redirect('/register');
     }
-    authModel.registerFunModel(req.body.name,req.body.email,req.body.password)
-    .then((user)=>{
-     res.render('login')
-    }).catch((err)=>{
-    console.log(err)
-    req.flash('error',err)
-    res.redirect('/register')
-     
-    })
- 
- }
+
+    authModel.registerFunModel(req.body.name, req.body.email, req.body.password)
+        .then((user) => {
+            res.render('login');
+        })
+        .catch((err) => {
+            console.log(err);
+            req.flash('error', err)[0]; // Store error message in flash
+            res.redirect('/register'); // Redirect to the register page
+        });
+};
+
 
 
  exports.getLoginPage=(req,res)=>{
@@ -42,24 +44,25 @@ exports.postRegisterPage=(req,res)=>{
 
 }
 
-exports.postLoginPage=(req,res)=>{
+exports.postLoginPage = (req, res) => {
     if (!req.body.email || !req.body.password) {
-        return res.status(400).send('All fields are required');
+        req.flash('error', 'All fields are required')[0];
+        return res.redirect('/login');
     }
-    authModel.loginFunModel(req.body.email,req.body.password).then((id)=>{
-        console.log("id controller",id)
-        req.session.userId=id
-        res.redirect('/')
 
+    authModel.loginFunModel(req.body.email, req.body.password)
+        .then((id) => {
+            console.log("id controller", id);
+            req.session.userId = id;
+            res.redirect('/'); // Redirect to home page
+        })
+        .catch((err) => {
+            console.log(err);
+            req.flash('error', err)[0]; // Store error message in flash
+            res.redirect('/login'); // Redirect to login page
+        });
+};
 
-    }).catch((err)=>{
-        console.log(err)
-        req.flash('error',err)
-        res.redirect('/login')
-
-    })
- 
- }
 exports.postLogoutPage=(req,res)=>{
     req.session.destroy(()=>{
         res.redirect('/login',)

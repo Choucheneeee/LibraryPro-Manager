@@ -8,6 +8,7 @@ const session=require("express-session")
 const MongoDbStore=require("connect-mongodb-session")(session)
 const PORT = process.env.PORT || 3000;
 const axios = require('axios');
+require('dotenv').config();
 
 
 
@@ -26,17 +27,18 @@ var Store=new MongoDbStore({
     collection:"session",
 
 })
-app.use(flash())
+
 app.use(session({
     secret:'Secret Key',
     cookie:{
         maxAge: 900000
     },
     store:Store,
-    resave:true,
+    resave:false,
     saveUninitialized:true,
 
 }))
+app.use(flash())
 
 app.use("/",RouterBook)
 app.use("/",RouterAuth)
@@ -75,11 +77,8 @@ app.get('/get-ip', async (req, res) => {
 const mongoose = require('mongoose');
 
 const url = process.env.MONGO_URI || 'mongodb+srv://chouchene:chouchene@cluster0.w51ol.mongodb.net/Library?retryWrites=true&w=majority&appName=Cluster0';
-mongoose.connect(url, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-})
-.then(() => console.log('Connected to MongoDB'))
+mongoose.connect(url)
+.then(() => console.log('Connected to MongoDB',url))
 .catch((err) => console.error('Database connection error:', err));
 
 
