@@ -18,7 +18,7 @@ exports.getRegisterPage=(req,res)=>{
 }
 exports.postRegisterPage = (req, res) => {
     if (!req.body.name || !req.body.email || !req.body.password) {
-        req.flash('error', 'All fields are required')[0];
+        req.flash('error', 'All fields are required');
         return res.redirect('/register');
     }
 
@@ -28,7 +28,7 @@ exports.postRegisterPage = (req, res) => {
         })
         .catch((err) => {
             console.log(err);
-            req.flash('error', err)[0]; // Store error message in flash
+            req.flash('error', err); // Store error message in flash
             res.redirect('/register'); // Redirect to the register page
         });
 };
@@ -46,7 +46,7 @@ exports.postRegisterPage = (req, res) => {
 
 exports.postLoginPage = (req, res) => {
     if (!req.body.email || !req.body.password) {
-        req.flash('error', 'All fields are required')[0];
+        req.flash('error', 'All fields are required');
         return res.redirect('/login');
     }
 
@@ -58,7 +58,7 @@ exports.postLoginPage = (req, res) => {
         })
         .catch((err) => {
             console.log(err);
-            req.flash('error', err)[0]; // Store error message in flash
+            req.flash('error', err); // Store error message in flash
             res.redirect('/login'); // Redirect to login page
         });
 };
