@@ -25,6 +25,9 @@ app.use(express.static(path.join(__dirname,'assets')))
 var Store=new MongoDbStore({
     uri: 'mongodb+srv://chouchene:chouchene@cluster0.w51ol.mongodb.net/Library?retryWrites=true&w=majority&appName=Cluster0',
     collection:"session",
+    connectionOptions: {
+        serverSelectionTimeoutMS: 30000, // Wait 30 seconds for server selection
+    },
 
 })
 
@@ -33,6 +36,7 @@ app.use(session({
     cookie:{
         maxAge: 900000
     },
+    
     store:Store,
     resave:false,
     saveUninitialized:true,

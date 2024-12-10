@@ -16,7 +16,13 @@ exports.registerFunModel=(name,email,password)=>{
     //(false add this user to collection)
 
     return new Promise((resolve,reject)=>{
-        mongo.connect(url).then(()=>{
+        mongo.connect(url,{
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+            serverSelectionTimeoutMS: 30000,
+            socketTimeoutMS: 45000,
+        })
+        .then(()=>{
 
         
         return User.findOne({email:email})
