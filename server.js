@@ -6,6 +6,10 @@ const flash=require("connect-flash")
 const app=express()
 const session=require("express-session")
 const MongoDbStore=require("connect-mongodb-session")(session)
+const PORT = process.env.PORT || 3000;
+const axios = require('axios');
+
+
 
 const RouterBook= require('./routers/book')
 const RouterAuth= require('./routers/auth.route')
@@ -57,5 +61,13 @@ app.get("/product",(req,res)=>{
 
 
 
+app.get('/get-ip', async (req, res) => {
+    try {
+        const { data } = await axios.get('https://api64.ipify.org?format=json');
+        res.send(`Render Public IP: ${data.ip}`);
+    } catch (err) {
+        res.status(500).send('Error fetching IP address');
+    }
+});
 
-app.listen(3000,()=>{console.log("server is running on port 3000")}) 
+app.listen(PORT,()=>{console.log("server is running on port 3000")}) 
