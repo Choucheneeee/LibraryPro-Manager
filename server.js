@@ -17,6 +17,7 @@ app.use(express.json()); // Parse JSON payloads
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded payloads
 
 
+
 app.set('view engine','ejs')
 app.use(express.static(path.join(__dirname,'assets')))
 
@@ -70,5 +71,16 @@ app.get('/get-ip', async (req, res) => {
         res.status(500).send('Error fetching IP address');
     }
 });
+
+const mongoose = require('mongoose');
+
+const url = process.env.MONGO_URI || 'mongodb+srv://chouchene:chouchene@cluster0.w51ol.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
+mongoose.connect(url, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+})
+.then(() => console.log('Connected to MongoDB'))
+.catch((err) => console.error('Database connection error:', err));
+
 
 app.listen(PORT,()=>{console.log("server is running on port 3000")}) 

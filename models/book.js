@@ -1,86 +1,100 @@
-const mongoose=require("mongoose")
+const mongoose = require("mongoose");
 
-var schemaBook=mongoose.Schema({
-    _id:mongoose.Schema.Types.ObjectId,
-    title:String,
-    description:String,
-    author:String,
-    price:Number,
-    image:String
-})
+// Schema Definition
+const schemaBook = mongoose.Schema({
+    _id: mongoose.Schema.Types.ObjectId,
+    title: String,
+    description: String,
+    author: String,
+    price: Number,
+    image: String,
+});
 
-var Book=mongoose.model('book',schemaBook,)
-var url='mongodb://localhost:27017/Library'
+// MongoDB Connection URL
+const url = process.env.MONGO_URI || 'mongodb+srv://chouchene:chouchene@cluster0.w51ol.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
 
+// Book Model
+const Book = mongoose.model('book', schemaBook);
 
+// Helper to Handle Mongoose Connection and Disconnection
+const connectToDB = () => mongoose.connect(url, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+});
 
-exports.getallbooks=()=>{
-    return new Promise((resolve,reject)=>{
-        mongoose.connect(url).then(()=>{
-            console.log("connected with db")
-            return Book.find()
-        }).then((books)=>{
-            console.log("Books fetched"); // Debugging
-            mongoose.disconnect()
-            resolve(books)
+const disconnectFromDB = () => mongoose.disconnect();
 
-        })
-        .catch((err)=>{
-            console.error("Error fetching books:", err); // Debugging
+// Fetch All Books
+exports.getallbooks = () => {
+    return new Promise((resolve, reject) => {
+        connectToDB()
+            .then(() => {
+                console.log("Connected with DB");
+                return Book.find();
+            })
+            .then((books) => {
+                console.log("Books fetched:", books);
+                resolve(books);
+            })
+            .catch((err) => {
+                console.error("Error fetching books:", err);
+                reject(err);
+            })
+            .finally(() => {
+                disconnectFromDB()
+                    .then(() => console.log("Disconnected from DB"));
+            });
+    });
+};
 
-            reject(err);
-    })
+// Fetch Three Books
+exports.getThreeBook = () => {
+    return new Promise((resolve, reject) => {
+        connectToDB()
+            .then(() => {
+                console.log("Connected with DB");
+                return Book.find({}).limit(3);
+            })
+            .then((books) => {
+                console.log("Books fetched:", books);
+                resolve(books);
+            })
+            .catch((err) => {
+                console.error("Error fetching books:", err);
+                reject(err);
+            })
+            .finally(() => {
+                disconnectFromDB()
+                    .then(() => console.log("Disconnected from DB"));
+            });
+    });
+};
 
-})
-}
-exports.getThreeBook=()=>{
-    return new Promise((resolve,reject)=>{
-        mongoose.connect(url).then(()=>{
-            console.log("connected with db")
-            return Book.find({}).limit(3)
-        }).then((books)=>{
-            console.log("Books fetched"); // Debugging
-            mongoose.disconnect()
-            resolve(books)
-
-        })
-        .catch((err)=>{
-            console.error("Error fetching books:", err); // Debugging
-
-            reject(err);
-    })
-
-})
-}
-
+// Fetch Book by ID
 exports.getBookById = (id) => {
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return Promise.reject("Invalid ID format");
     }
 
-    const objectId = new mongoose.Types.ObjectId(id); // Convert string to ObjectId
-    console.log(typeof objectId, 'type');
-
     return new Promise((resolve, reject) => {
-        mongoose
-            .connect(url)
+        connectToDB()
             .then(() => {
                 console.log("Connected with DB");
-                return Book.findById(objectId); // Use the pre-converted ObjectId
+                return Book.findById(id);
             })
             .then((book) => {
-                mongoose.disconnect();
-
                 if (!book) {
-                    return reject("No book found with the given ID"); // Reject if no book is found
+                    throw new Error("No book found with the given ID");
                 }
-
-                resolve(book); // Resolve with the found book
+                resolve(book);
             })
             .catch((err) => {
-                mongoose.disconnect(); // Disconnect on any error
                 console.error("Error fetching book:", err);
-                reject(err); // Reject with the error
+                reject(err);
+            })
+            .finally(() => {
+                disconnectFromDB()
+                    .then(() => console.log("Disconnected from DB"));
             });
     });
 };
