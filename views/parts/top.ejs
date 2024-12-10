@@ -7,7 +7,7 @@
     <meta name="author" content="">
     <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
 
-    <title>Sixteen Clothing HTML Template</title>
+    <title>Book Store</title>
 
     <!-- Bootstrap core CSS -->
     <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -47,11 +47,14 @@ https://templatemo.com/tm-546-sixteen-clothing
           </button>
           <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
+              
+
               <li class="nav-item">
                 <a class="nav-link" href="/">Home
                   <span class="sr-only">(current)</span>
                 </a>
-              </li> 
+              </li>
+              <% if(verifUser) { %> 
               <li class="nav-item">
                 <a class="nav-link" href="/product">Our Products</a>
               </li>
@@ -62,11 +65,22 @@ https://templatemo.com/tm-546-sixteen-clothing
                 <a class="nav-link" href="/contact">Contact Us</a>
               </li>
               <li class="nav-item">
+                <form class="nav-link" role="search" method="Post" action="/logout">
+                  <button  class="btn btn-danger" type="submit">Logout</button>
+                </form>
+              </li>
+              
+
+              <% }else { %> 
+
+              <li class="nav-item">
                 <a class="nav-link" href="/login">Login</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="/register">Register</a>
               </li>
+              <% } %> 
+              
             </ul>
           </div>
         </div>

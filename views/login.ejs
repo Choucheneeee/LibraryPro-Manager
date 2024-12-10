@@ -1,7 +1,7 @@
 <%- include('parts/top.ejs')%>
 <br><br><br><br><br><br><br>
 <div class="container">
-    <form>
+    <form method="post" action="/login">
         <!-- Email input -->
         <div data-mdb-input-init class="form-outline mb-4">
           <input type="email" id="form2Example1" name="email" class="form-control" placeholder="Email address" />
@@ -14,9 +14,13 @@
         </div>
       
         <!-- 2 column grid layout for inline styling -->
-       
+         <% if (message) { %>
+        <div class="alert alert-danger">
+          <%= message %>
+         </div>
+         <%}%>
         <!-- Submit button -->
-        <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block mb-4">Sign in</button>
+        <button  type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block mb-4">Sign in</button>
       
         <!-- Register buttons -->
       </form>

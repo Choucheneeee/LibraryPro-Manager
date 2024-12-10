@@ -2,13 +2,16 @@ const BookModel=require("../models/book")
 
 exports.getThreeBookController=(req,res,next)=>{
     BookModel.getThreeBook().then(books=>{
-        res.render('index',{books:books})
+        res.render('index',{
+            books:books,
+            verifUser:req.session.userId
+        })
     })
 }
 
 exports.getallbooksController=(req,res,next)=>{
     BookModel.getallbooks().then(books=>{
-        res.render('product',{books:books})
+        res.render('product',{books:books,verifUser:req.session.userId})
     })
 }
 
@@ -16,7 +19,7 @@ exports.getBookByIdController=(req,res,next)=>{
     const id = req.params.id;
     console.log(id)
     BookModel.getBookById(id).then(book=>{
-        res.render('details',{book:book})
+        res.render('details',{book:book,verifUser:req.session.userId})
     })
     .catch((err) => {
         console.error("Error:", err);
