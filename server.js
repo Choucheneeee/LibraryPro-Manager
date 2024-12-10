@@ -65,6 +65,7 @@ app.get('/get-ip', async (req, res) => {
     try {
         const { data } = await axios.get('https://api64.ipify.org?format=json');
         res.send(`Render Public IP: ${data.ip}`);
+        console.log(data.ip)
     } catch (err) {
         res.status(500).send('Error fetching IP address');
     }
