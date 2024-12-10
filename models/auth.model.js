@@ -8,7 +8,7 @@ var schemaAuth=mongo.Schema({
 })
 
 var User=mongo.model("user",schemaAuth)
-const url = process.env.MONGO_URI || 'mongodb+srv://chouchene:chouchene@cluster0.w51ol.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
+const url = process.env.MONGO_URI || 'mongodb+srv://chouchene:chouchene@cluster0.w51ol.mongodb.net/Library?retryWrites=true&w=majority&appName=Cluster0';
 exports.registerFunModel=(name,email,password)=>{
     // test email if exit 
     //(true go to login)

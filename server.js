@@ -74,7 +74,7 @@ app.get('/get-ip', async (req, res) => {
 
 const mongoose = require('mongoose');
 
-const url = process.env.MONGO_URI || 'mongodb+srv://chouchene:chouchene@cluster0.w51ol.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
+const url = process.env.MONGO_URI || 'mongodb+srv://chouchene:chouchene@cluster0.w51ol.mongodb.net/Library?retryWrites=true&w=majority&appName=Cluster0';
 mongoose.connect(url, {
     useNewUrlParser: true,
     useUnifiedTopology: true,

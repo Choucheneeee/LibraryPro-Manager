@@ -11,7 +11,7 @@ const schemaBook = mongoose.Schema({
 });
 
 // MongoDB Connection URL
-const url = process.env.MONGO_URI || 'mongodb+srv://chouchene:chouchene@cluster0.w51ol.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
+const url = process.env.MONGO_URI || 'mongodb+srv://chouchene:chouchene@cluster0.w51ol.mongodb.net/Library?retryWrites=true&w=majority&appName=Cluster0';
 
 // Book Model
 const Book = mongoose.model('book', schemaBook);
