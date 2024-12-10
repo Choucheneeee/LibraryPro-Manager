@@ -13,12 +13,14 @@ app.use(express.static(path.join(__dirname,'assets')))
 
 
 
-
 app.use("/",RouterBook)
+
+
 app.get("/contact",(req,res)=>{
     res.render("contact")
 
 })
+
 app.get("/about",(req,res)=>{
     res.render("about")
 

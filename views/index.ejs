@@ -35,9 +35,9 @@
           <% for(let book of books) { %>
           <div class="col-md-4">
             <div class="product-item">
-              <a href="#"><img src="<%= book.image %>" alt=""></a>
+              <a href="/books/<%= book._id %>" target="_blank"><img src="/uploads/<%= book.image %>" alt=""></a>
               <div class="down-content">
-                <a href="#"><h4><%= book.title %></h4></a>
+                <a href="/books/<%= book._id %>"target="_blank"><h4><%= book.title %></h4></a>
                 <h6>$<%= book.price %></h6>
                 <p><%= book.description %></p>
                 
