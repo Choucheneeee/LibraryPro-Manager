@@ -24,7 +24,7 @@ exports.registerFunModel=(name,email,password)=>{
         }).then((User)=>{
             if(User){
                 mongo.disconnect()
-                reject('email is used try to login')
+                reject('The email address is already in use. Please try logging in.');
             }
             else{
                 return bcrypt.hash(password,10)
@@ -40,7 +40,7 @@ exports.registerFunModel=(name,email,password)=>{
         }).then((user)=>{
                 if (user) {
                     mongo.disconnect();
-                    resolve('User added successfully');
+                    resolve('User registered successfully.');
                 }
             }).catch((err)=>{
                 mongo.disconnect()
@@ -60,12 +60,12 @@ exports.loginFunModel=(email,password)=>{
     return new Promise((resolve,reject)=>{
         mongo.connect(url).then(()=>{
 
-        console.log("connected to database to login")
-        return User.findOne({email:email})
+            console.log("Successfully connected to the database for login.");
+            return User.findOne({email:email})
 
         }).then((user)=>{
             if(user){
-                console.log("user exist")
+                console.log("User exists");
                 bcrypt.compare(password,user.password).then((verif)=>{
                     if(verif){  
                         mongo.disconnect()
@@ -73,13 +73,13 @@ exports.loginFunModel=(email,password)=>{
                     }
                     else{
                         mongo.disconnect()
-                        reject('password is incorrect')
-                        }
+                        reject('The password entered is incorrect.');
+                    }
                 })
             } 
             else{
                     mongo.disconnect()
-                    reject('Invalide Email')
+                    reject('Invalid email address.');
                 }
             
            

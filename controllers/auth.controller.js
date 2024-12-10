@@ -5,17 +5,7 @@ const authModel=require('../models/auth.model')
 
 
 
-exports.getRegisterPage=(req,res)=>{
-    const errorMessage = req.flash('error')[0]; // Retrieve the flash message
-    console.log("Flash message:", errorMessage); // Debug log
-    res.render('register',{
-        verifUser:req.session.userId,
-        message:errorMessage|| null 
-    })
-    
-    
 
-}
 exports.postRegisterPage = (req, res) => {
     if (!req.body.name || !req.body.email || !req.body.password) {
         req.flash('error', 'All fields are required');
@@ -24,7 +14,7 @@ exports.postRegisterPage = (req, res) => {
 
     authModel.registerFunModel(req.body.name, req.body.email, req.body.password)
         .then((user) => {
-            res.render('login');
+            res.redirect('/login');
         })
         .catch((err) => {
             console.log(err);
@@ -35,14 +25,7 @@ exports.postRegisterPage = (req, res) => {
 
 
 
- exports.getLoginPage=(req,res)=>{
-    res.render('login',{
-        verifUser:req.session.userId,
-        message:req.flash('error')[0]
 
-    })
-
-}
 
 exports.postLoginPage = (req, res) => {
     if (!req.body.email || !req.body.password) {
@@ -58,8 +41,12 @@ exports.postLoginPage = (req, res) => {
         })
         .catch((err) => {
             console.log(err);
-            req.flash('error', err); // Store error message in flash
-            res.redirect('/login'); // Redirect to login page
+            req.flash('error', err);
+            const errorMessage = req.flash('error')[0] || null; 
+            res.render('login', { 
+                verifUser: req.session.userId,
+                message: errorMessage
+            }); 
         });
 };
 
@@ -67,6 +54,30 @@ exports.postLogoutPage=(req,res)=>{
     req.session.destroy(()=>{
         res.redirect('/login',)
     })
-
-
  }
+
+
+
+
+
+ exports.getRegisterPage=(req,res)=>{
+    const errorMessage = req.flash('error')[0] || null ;
+    console.log(errorMessage,'register page') // Retrieve the flash message
+    console.log("Flash message:", errorMessage); // Debug log
+    res.render('register',{
+        verifUser:req.session.userId,
+        message:errorMessage 
+    })
+    
+    
+
+}
+ exports.getLoginPage=(req,res)=>{
+    const errorMessage = req.flash('error')[0] || null ;
+    console.log(errorMessage,'login page') // Retrieve the flash message
+    res.render('login',{
+        verifUser:req.session.userId,
+        message:errorMessage
+    })
+
+}
