@@ -2,23 +2,23 @@ const mongoose = require("mongoose");
 
 // Schema Definition
 const schemaBook = mongoose.Schema({
-    _id: mongoose.Schema.Types.ObjectId,
     title: String,
     description: String,
     author: String,
     price: Number,
     image: String,
+    userId:String,
 });
 
 // MongoDB Connection URL
-const url = process.env.MONGO_URI || 'mongodb+srv://chouchene:chouchene@cluster0.w51ol.mongodb.net/Library?retryWrites=true&w=majority&appName=Cluster0';
+const url = process.env.MONGO_URI ;
+const urllocal="mongodb://localhost:27017/Library"
 
 // Book Model
 const Book = mongoose.model('book', schemaBook);
 
 // Helper to Handle Mongoose Connection and Disconnection
-const connectToDB = () => mongoose.connect(url);
-console.log(url,'url');
+const connectToDB = () => mongoose.connect(urllocal);
 
 
 const disconnectFromDB = () => mongoose.disconnect();
@@ -40,7 +40,7 @@ exports.getallbooks = () => {
             })
             .finally(() => {
                 disconnectFromDB()
-                    .then(() => console.log("Disconnected from DB"));
+                    .then(() => console.log("Disconnected from DB books.js"));
             });
     });
 };
@@ -50,7 +50,7 @@ exports.getThreeBook = () => {
     return new Promise((resolve, reject) => {
         connectToDB()
             .then(() => {
-                console.log("Connected with DB");
+                console.log("Connected with DB from books.js");
                 return Book.find({}).limit(3);
             })
             .then((books) => {
@@ -63,7 +63,7 @@ exports.getThreeBook = () => {
             })
             .finally(() => {
                 disconnectFromDB()
-                    .then(() => console.log("Disconnected from DB"));
+                    .then(() => console.log("Disconnected from DB from books.js"));
             });
     });
 };
@@ -77,7 +77,7 @@ exports.getBookById = (id) => {
     return new Promise((resolve, reject) => {
         connectToDB()
             .then(() => {
-                console.log("Connected with DB");
+                console.log("Connected from DB from books.js");
                 return Book.findById(id);
             })
             .then((book) => {
@@ -92,7 +92,58 @@ exports.getBookById = (id) => {
             })
             .finally(() => {
                 disconnectFromDB()
-                    .then(() => console.log("Disconnected from DB"));
+                    .then(() => console.log("Disconnected from DB from books.js"));
             });
     });
 };
+
+
+exports.addBookFunModel=(title, author,price,description,image,userId)=>{
+    // test email if exit 
+    //(true go to login)
+    //(false add this user to collection)
+
+    return new Promise((resolve,reject)=>{
+        connectToDB()
+        .then(()=>{
+            console.log("connected from auth.js add book")
+
+            console.log("Successfully connected to the database for login.");
+            return Book.findOne({title:title})
+
+        }).then((book)=>{
+            if(book){
+                console.log("book exists");
+                disconnectFromDB()
+                reject("Books already Exist")
+            } 
+            else{
+                let b=new Book({
+                    title:title,
+                    author:author,
+                    price:price,
+                    description:description,
+                    image:image,
+                    userId:userId
+
+
+                })
+                return b.save()
+                
+                }
+                    
+                }).then((b)=>{
+                    disconnectFromDB()
+                    console.log("Disconnect from auth.js")
+                    resolve(b)
+                })
+                .catch((err)=>{
+                    disconnectFromDB()
+                    console.log("Disconnect from books.js add book  ")
+                    reject(err)
+                    })
+        })
+        
+
+
+    }

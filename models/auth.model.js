@@ -8,15 +8,15 @@ var schemaAuth=mongo.Schema({
 })
 
 var User=mongo.model("user",schemaAuth)
-const url = process.env.MONGO_URI || 'mongodb+srv://chouchene:chouchene@cluster0.w51ol.mongodb.net/Library?retryWrites=true&w=majority&appName=Cluster0';
-console.log('url',url)
+const url = process.env.MONGO_URI ;
+const urllocal="mongodb://localhost:27017/Library"
 exports.registerFunModel=(name,email,password)=>{
     // test email if exit 
     //(true go to login)
     //(false add this user to collection)
 
     return new Promise((resolve,reject)=>{
-        mongo.connect(url,{
+        mongo.connect(urllocal,{
             useNewUrlParser: true,
             useUnifiedTopology: true,
             serverSelectionTimeoutMS: 30000,
@@ -64,7 +64,8 @@ exports.loginFunModel=(email,password)=>{
     //(false add this user to collection)
 
     return new Promise((resolve,reject)=>{
-        mongo.connect(url).then(()=>{
+        mongo.connect(urllocal).then(()=>{
+            console.log("connected from auth.js")
 
             console.log("Successfully connected to the database for login.");
             return User.findOne({email:email})
@@ -85,6 +86,7 @@ exports.loginFunModel=(email,password)=>{
             } 
             else{
                     mongo.disconnect()
+                    console.log("Disconnect from auth.js")
                     reject('Invalid email address.');
                 }
             
@@ -92,8 +94,14 @@ exports.loginFunModel=(email,password)=>{
             
         }).catch((err)=>{
             mongo.disconnect()
+            console.log("Disconnect from auth.js")
+
             reject(err)
             })
         
             })
         }
+
+                
+
+
