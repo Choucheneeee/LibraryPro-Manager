@@ -1,4 +1,60 @@
 <%- include("parts/top.ejs")%>
 
-    <h1>My books works!</h1>
+<br><br>
+<br><br>
+<br><br>
+    <div class="container">
+        <% if (message) { %>
+            <div class="alert alert-success">
+              <%= message %>
+             </div>
+             <%}%>
+             <% if (messageerror) { %>
+                <div class="alert alert-danger">
+                  <%= messageerror %>
+                 </div>
+                 <%}%>
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Image</th>
+                <th scope="col">Title</th>
+                <th scope="col">Author</th>
+                <th scope="col">Price</th>
+                <th scope="col">Action</th>
+
+              </tr>
+            </thead>
+            <tbody>
+                <% for(let book of books) { %>
+                    
+              <tr>
+                <td>
+                    <a href="/books/<%= book._id %>" target="_blank"><img style="height: 70px;" src="/uploads/<%= book.image %>" alt=""></a>
+
+                </td>
+                
+                    <td><a style="color: black;" href="/books/<%= book._id %>"  target="_blank"><%= book.title %></a></td>            
+
+                <td><%= book.author %></td>
+                <td>$<%= book.price %></td>
+                <td>
+                    <form method="POST" action="/update">
+                    <button type="button" class="btn btn-warning">Update</button>
+                </form>
+                <form style="margin-top: 1em;" method="POST" action="/delete">
+                    <input type="hidden" name="bookId" value="<%= book._id %>">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+                </td>
+
+              </tr>
+                    
+              <% } %>
+              
+              
+            </tbody>
+          </table>
+
+    </div>
     <%- include('parts/footer.ejs')%>

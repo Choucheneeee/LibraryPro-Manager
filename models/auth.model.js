@@ -8,9 +8,9 @@ var schemaAuth=mongo.Schema({
 })
 
 var User=mongo.model("user",schemaAuth)
-const url = process.env.MONGO_URI ;
+const url=process.env.url
 console.log("url cha",url)
-//const url="mongodb://localhost:27017/Library"
+
 exports.registerFunModel=(name,email,password)=>{
     // test email if exit 
     //(true go to login)
@@ -78,7 +78,7 @@ exports.loginFunModel=(email,password)=>{
                     if(verif){  
                         mongo.disconnect()
                         resolve(user._id)
-                    }
+                    }   
                     else{
                         mongo.disconnect()
                         reject('The password entered is incorrect.');

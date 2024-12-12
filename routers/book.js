@@ -2,6 +2,7 @@ const bookController=require("../controllers/book")
 const router=require('express').Router()
 const guardAuth=require("./guardAuth")
 const multer=require("multer")
+const body=require('express').urlencoded({extended:true})
 
 router.get("/",bookController.getThreeBookController)
 router.get("/product",guardAuth.isAuth,bookController.getallbooksController)
@@ -22,6 +23,11 @@ router.post('/addbook',multer({
 }).single('image'),
 guardAuth.isAuth,
 bookController.PostAddBook)
+
+
+router.get("/mybooks",guardAuth.isAuth,bookController.getmybooksController)
+router.post("/delete",body,guardAuth.isAuth,bookController.deletemybooksController)
+router.post("/update/:id",body,guardAuth.isAuth,bookController.updatemybooksController)
 
 
 module.exports=router

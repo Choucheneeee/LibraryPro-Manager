@@ -11,8 +11,7 @@ const schemaBook = mongoose.Schema({
 });
 
 // MongoDB Connection URL
-const url = process.env.MONGO_URI ;
-//const url="mongodb://localhost:27017/Library"
+const url=process.env.url
 
 // Book Model
 const Book = mongoose.model('book', schemaBook);
@@ -31,7 +30,6 @@ exports.getallbooks = () => {
                 return Book.find();
             })
             .then((books) => {
-                console.log("Books fetched:", books);
                 resolve(books);
             })
             .catch((err) => {
@@ -54,7 +52,6 @@ exports.getThreeBook = () => {
                 return Book.find({}).limit(3);
             })
             .then((books) => {
-                console.log("Books fetched:", books);
                 resolve(books);
             })
             .catch((err) => {
@@ -147,3 +144,51 @@ exports.addBookFunModel=(title, author,price,description,image,userId)=>{
 
 
     }
+
+
+
+exports.getmybooks = (id) => {
+    return new Promise((resolve, reject) => {
+        connectToDB()
+            .then(() => {
+                return Book.find({userId:id});
+            })
+            .then((books) => {
+                resolve(books);
+            })
+            .catch((err) => {
+                console.error("Error fetching books:", err);
+                reject(err);
+            })
+            .finally(() => {
+                disconnectFromDB()
+                    .then(() => console.log("Disconnected from DB books.js"));
+            });
+    });
+};
+
+exports.deletemybooks = (id) => {
+    return new Promise((resolve, reject) => {
+        connectToDB()
+            .then(() => {
+                return Book.deleteOne({_id:id});
+            })
+            .then(() => {
+                const b=Book.find()
+            }).then(()=>{
+                const msg="Book deleted"
+                resolve(msg)
+
+            })
+            .catch((err) => {
+                console.error("Error deleting books:", err);
+                reject(err);
+            })
+            .finally(() => {
+                disconnectFromDB()
+                    .then(() => console.log("Disconnected from DB books.js"));
+            });
+    });
+};
+
+

@@ -14,6 +14,36 @@ exports.getallbooksController=(req,res,next)=>{
         res.render('product',{books:books,verifUser:req.session.userId})
     })
 }
+exports.getmybooksController=(req,res,next)=>{
+    const msg = req.flash('msg')[0] || null; // Retrieve the flash message
+    const error = req.flash('error')[0] || null; // Retrieve the flash message
+
+    console.log('Flash message (mybooks):', msg);
+    console.log('Flash message (mybooks):', error);
+    BookModel.getmybooks(req.session.userId).then(books=>{
+        res.render('mybooks',{books:books,verifUser:req.session.userId,message: msg,messageerror: error,})
+    })
+}
+exports.deletemybooksController=(req,res,next)=>{
+    BookModel.deletemybooks(req.body.bookId).then(msg=>{
+        req.flash('msg',msg);
+        res.redirect("mybooks")
+
+    }).catch((err)=>{
+        req.flash('error',err);
+        console.log("error deleting book",err)
+        res.redirect("mybooks")
+
+    })
+}
+exports.updatemybooksController=(req,res,next)=>{
+    BookModel.getmybooks(req.session.userId).then(books=>{
+        res.render('mybooks',{books:books,verifUser:req.session.userId})
+    })
+}
+
+
+
 
 exports.getBookByIdController=async(req,res,next)=>{
     const id = req.params.id;

@@ -20,8 +20,7 @@ app.use(express.urlencoded({ extended: true })); // Parse URL-encoded payloads
 
 app.set('view engine','ejs')
 app.use(express.static(path.join(__dirname,'assets')))
-const url = process.env.MONGO_URI;
-//const url="mongodb://localhost:27017/Library"
+const url=process.env.url;
 
 var Store=new MongoDbStore({
     uri:url,
@@ -56,10 +55,6 @@ app.get("/contact",(req,res)=>{
 
 app.get("/about",(req,res)=>{
     res.render("about",{verifUser:req.session.userId})
-
-})
-app.get("/mybooks",(req,res)=>{
-    res.render("mybooks",{verifUser:req.session.userId})
 
 })
 
