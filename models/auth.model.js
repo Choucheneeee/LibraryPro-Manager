@@ -9,14 +9,14 @@ var schemaAuth=mongo.Schema({
 
 var User=mongo.model("user",schemaAuth)
 const url = process.env.MONGO_URI ;
-const urllocal="mongodb://localhost:27017/Library"
+//const url="mongodb://localhost:27017/Library"
 exports.registerFunModel=(name,email,password)=>{
     // test email if exit 
     //(true go to login)
     //(false add this user to collection)
 
     return new Promise((resolve,reject)=>{
-        mongo.connect(urllocal,{
+        mongo.connect(url,{
             useNewUrlParser: true,
             useUnifiedTopology: true,
             serverSelectionTimeoutMS: 30000,
@@ -64,7 +64,7 @@ exports.loginFunModel=(email,password)=>{
     //(false add this user to collection)
 
     return new Promise((resolve,reject)=>{
-        mongo.connect(urllocal).then(()=>{
+        mongo.connect(url).then(()=>{
             console.log("connected from auth.js")
 
             console.log("Successfully connected to the database for login.");

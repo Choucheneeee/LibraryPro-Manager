@@ -12,13 +12,13 @@ const schemaBook = mongoose.Schema({
 
 // MongoDB Connection URL
 const url = process.env.MONGO_URI ;
-const urllocal="mongodb://localhost:27017/Library"
+//const url="mongodb://localhost:27017/Library"
 
 // Book Model
 const Book = mongoose.model('book', schemaBook);
 
 // Helper to Handle Mongoose Connection and Disconnection
-const connectToDB = () => mongoose.connect(urllocal);
+const connectToDB = () => mongoose.connect(url);
 
 
 const disconnectFromDB = () => mongoose.disconnect();

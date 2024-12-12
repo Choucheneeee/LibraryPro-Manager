@@ -20,11 +20,11 @@ app.use(express.urlencoded({ extended: true })); // Parse URL-encoded payloads
 
 app.set('view engine','ejs')
 app.use(express.static(path.join(__dirname,'assets')))
-const url = process.env.MONGO_URI || 'mongodb+srv://chouchene:chouchene@cluster0.w51ol.mongodb.net/Library?retryWrites=true&w=majority&appName=Cluster0';
-const urllocal="mongodb://localhost:27017/Library"
+const url = process.env.MONGO_URI;
+//const url="mongodb://localhost:27017/Library"
 
 var Store=new MongoDbStore({
-    uri:urllocal,
+    uri:url,
     collection:"session",
     connectionOptions: {
         serverSelectionTimeoutMS: 30000, // Wait 30 seconds for server selection
