@@ -9,6 +9,7 @@ var schemaAuth=mongo.Schema({
 
 var User=mongo.model("user",schemaAuth)
 const url = process.env.MONGO_URI ;
+console.log("url cha",url)
 //const url="mongodb://localhost:27017/Library"
 exports.registerFunModel=(name,email,password)=>{
     // test email if exit 

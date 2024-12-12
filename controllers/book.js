@@ -15,10 +15,10 @@ exports.getallbooksController=(req,res,next)=>{
     })
 }
 
-exports.getBookByIdController=(req,res,next)=>{
+exports.getBookByIdController=async(req,res,next)=>{
     const id = req.params.id;
     console.log(id)
-    const errorMessage = req.flash('message')[0] || null; // Retrieve the flash message
+    const errorMessage = await req.flash('message')[0] || null; // Retrieve the flash message
 
     BookModel.getBookById(id).then(book=>{
         res.render('details',{book:book,verifUser:req.session.userId,message:errorMessage})
@@ -33,8 +33,8 @@ exports.getBookByIdController=(req,res,next)=>{
     });
 }
 
-exports.GetAddBook=(req,res)=>{
-    const errorMessage = req.flash('error')[0] || null; // Retrieve the flash message
+exports.GetAddBook=async(req,res)=>{
+    const errorMessage = await req.flash('error')[0] || null; // Retrieve the flash message
     console.log('Flash message (addbook):', errorMessage);
 
     res.render('addbook',{
