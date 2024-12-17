@@ -36,10 +36,22 @@ exports.deletemybooksController=(req,res,next)=>{
 
     })
 }
-exports.updatemybooksController=(req,res,next)=>{
-    BookModel.getmybooks(req.session.userId).then(books=>{
-        res.render('mybooks',{books:books,verifUser:req.session.userId})
+exports.getupdatemybooksController=(req,res,next)=>{
+    const id = req.params.id;
+
+    BookModel.getupdatemybooks(req.body.bookId).then(book=>{
+        res.render('updatebook',{book:book,verifUser:req.session.userId})
+
     })
+
+    /*BookModel.updatemybooks(req.body.bookId).then(msg=>{
+        req.flash("msg",msg)
+        res.redirect('mybooks')
+    }).catch((err)=>{
+        req.flash("error",err)
+        console.log('error updating',err)
+        res.redirect("mybooks")
+    })*/
 }
 
 
@@ -102,4 +114,32 @@ exports.PostAddBook=(req,res)=>{
 }
 
 
+exports.UpdateBook=(req,res)=>{
+
+    const { title, author, description, price, oldImage } = req.body;
+
+    let image;
+     if (req.file) {
+         image = req.file.filename; 
+     } else {
+         image = oldImage;
+     }
+
+
+    BookModel.modifyBookFunModel(req.body.id,title,author,price,description,image,req.session.userId)
+    .then((book)=>{
+        const msg=" Book Modified with Success"
+        
+        req.flash('message', msg);
+
+        res.redirect(`/books/${book._id}`)
+
+    })
+    .catch((err)=>{
+        req.flash('error', err);
+        res.redirect('/update')
+            })
+
+
+}
 

@@ -40,7 +40,9 @@
                 <td>$<%= book.price %></td>
                 <td>
                     <form method="POST" action="/update">
-                    <button type="button" class="btn btn-warning">Update</button>
+                      <input type="hidden" name="bookId" value="<%= book._id %>">
+
+                    <button type="submit" class="btn btn-warning">Update</button>
                 </form>
                 <form style="margin-top: 1em;" method="POST" action="/delete">
                     <input type="hidden" name="bookId" value="<%= book._id %>">

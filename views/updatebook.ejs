@@ -1,0 +1,44 @@
+<%- include("parts/top.ejs")%>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<div class="container">
+<form method="POST" action="/updatebook" enctype="multipart/form-data">
+
+
+    <div class="mb-3">
+      <label  class="form-label">Book Title</label>
+      <input type="hidden" name="id" class="form-control" value="<%= book.id %>" >
+
+      <input type="text" name="title" class="form-control" value="<%= book.title %>" >
+    </div>
+    <div class="mb-3">
+        <label  class="form-label">Author</label>
+        <input type="text" name="author" class="form-control" value="<%= book.author %>" >
+      </div>
+    <div class="mb-3">
+        <label  class="form-label">Description</label>
+        <textarea type="text" name="description" class="form-control" ><%= book.description %></textarea>
+      </div>
+      <div class="mb-3">
+        <label  class="form-label">Price</label>
+        <input type="number" name="price" class="form-control" value="<%= book.price %>" >
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Image:</label>
+        <!-- Show the existing image -->
+        <% if (book.image) { %>
+            <img src="/uploads/<%= book.image %>" alt="Book Image" style="width: 150px; height: auto; margin-bottom: 10px;">
+            <input type="hidden" name="oldImage" value="<%= book.image %>">
+
+        <% } %>
+        <input type="file" accept=".jpg,.png,.jpeg" name="image" class="form-control">
+    </div>
+   
+    <button type="submit" class="btn btn-warning">Update</button>
+  </form>
+</div>
+<%- include('parts/footer.ejs')%>

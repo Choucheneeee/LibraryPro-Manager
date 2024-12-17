@@ -145,7 +145,47 @@ exports.addBookFunModel=(title, author,price,description,image,userId)=>{
 
     }
 
+exports.modifyBookFunModel=(id,title, author,price,description,image,userId)=>{
+        // test email if exit 
+        //(true go to login)
+        //(false add this user to collection)
+    
+        return new Promise(async(resolve,reject)=>{
+            connectToDB()
+            .then(()=>{
+                console.log("connected from auth.js add book")
+    
+                console.log("Successfully connected to the database for login.");
+                return Book.updateOne(
+                    { _id:id },
+                        {
+                            title,
+                            author,
+                            description,
+                            price,
+                            image,
+                        }
 
+                )
+    
+            }).then(async()=>{
+                    const book = await Book.findOne({ _id: id });
+
+                        disconnectFromDB()
+                        console.log("Disconnect from auth.js")
+                        resolve(book)
+                    })
+                    .catch((err)=>{
+                        disconnectFromDB()
+                        console.log("Disconnect from books.js add book  ")
+                        reject(err)
+                        })
+            })
+            
+    
+    
+        }
+    
 
 exports.getmybooks = (id) => {
     return new Promise((resolve, reject) => {
@@ -190,5 +230,32 @@ exports.deletemybooks = (id) => {
             });
     });
 };
+exports.getupdatemybooks = (id) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            // Connect to the database
+            await connectToDB();
+            console.log("Connected to DB books.js");
+
+            // Fetch the book
+            const book = await Book.findOne({ _id: id });
+
+            if (!book) {
+                throw new Error("Book not found");
+            }
+
+
+            resolve(book); // Resolve the Promise with the book object
+        } catch (err) {
+            console.error("Error fetching book:", err);
+            reject(err); // Reject the Promise with the error
+        } finally {
+            // Disconnect from the database
+            await disconnectFromDB();
+            console.log("Disconnected from DB books.js");
+        }
+    });
+};
+
 
 

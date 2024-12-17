@@ -27,7 +27,20 @@ bookController.PostAddBook)
 
 router.get("/mybooks",guardAuth.isAuth,bookController.getmybooksController)
 router.post("/delete",body,guardAuth.isAuth,bookController.deletemybooksController)
-router.post("/update/:id",body,guardAuth.isAuth,bookController.updatemybooksController)
+router.post("/update",body,guardAuth.isAuth,bookController.getupdatemybooksController)
 
+router.post('/updatebook',multer({
+    storage:multer.diskStorage({
+        destination:(req,file,cb)=>{
+            cb(null,'assets/uploads')
+            },
+            filename:(req,file,cb)=>{
+                cb(null,Date.now()+'cha'+file.originalname)
+                }
+            })
+   
+}).single('image'),
+guardAuth.isAuth,
+bookController.UpdateBook)
 
 module.exports=router

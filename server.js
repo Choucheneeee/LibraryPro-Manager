@@ -26,7 +26,7 @@ var Store=new MongoDbStore({
     uri:url,
     collection:"session",
     connectionOptions: {
-        serverSelectionTimeoutMS: 30000, // Wait 30 seconds for server selection
+        serverSelectionTimeoutMS: 30000,
     },
 
 })
@@ -34,7 +34,7 @@ var Store=new MongoDbStore({
 app.use(session({
     secret:'Secret Key',
     cookie:{
-        maxAge: 900000
+        maxAge: 900000 // 15 minute
     },
     
     store:Store,

@@ -27,7 +27,6 @@ exports.postLoginPage = (req, res) => {
 
     authModel.loginFunModel(req.body.email, req.body.password)
         .then((id) => {
-            console.log('id controller', id);
             req.session.userId = id; // Save the user ID in the session
             res.redirect('/'); // Redirect to the home page on successful login
         })
@@ -52,7 +51,6 @@ exports.postLogoutPage = (req, res) => {
 // Register GET handler
 exports.getRegisterPage = (req, res) => {
     const errorMessage = req.flash('error')[0] || null; // Retrieve the flash message
-    console.log('Flash message (register):', errorMessage);
     res.render('register', {
         verifUser: req.session.userId,
         message: errorMessage, // Pass the error message to the view
@@ -62,7 +60,6 @@ exports.getRegisterPage = (req, res) => {
 // Login GET handler
 exports.getLoginPage = (req, res) => {
     const errorMessage = req.flash('error')[0] || null; // Retrieve the flash message
-    console.log('Flash message (login):', errorMessage);
     res.render('login', {
         verifUser: req.session.userId,
         message: errorMessage, // Pass the error message to the view
