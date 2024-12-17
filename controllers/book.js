@@ -37,7 +37,6 @@ exports.deletemybooksController=(req,res,next)=>{
     })
 }
 exports.getupdatemybooksController=(req,res,next)=>{
-    const id = req.params.id;
 
     BookModel.getupdatemybooks(req.body.bookId).then(book=>{
         res.render('updatebook',{book:book,verifUser:req.session.userId})
@@ -60,7 +59,8 @@ exports.getupdatemybooksController=(req,res,next)=>{
 exports.getBookByIdController=async(req,res,next)=>{
     const id = req.params.id;
     console.log(id)
-    const errorMessage = await req.flash('message')[0] || null; // Retrieve the flash message
+    const errorMessage = await req.flash('message')[0] || null;
+    console.log(errorMessage,'New Book update') // Retrieve the flash message
 
     BookModel.getBookById(id).then(book=>{
         res.render('details',{book:book,verifUser:req.session.userId,message:errorMessage})

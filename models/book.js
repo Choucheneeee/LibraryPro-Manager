@@ -24,8 +24,8 @@ const disconnectFromDB = () => mongoose.disconnect();
 
 // Fetch All Books
 exports.getallbooks = () => {
-    return new Promise((resolve, reject) => {
-        connectToDB()
+    return new Promise(async(resolve, reject) => {
+        await connectToDB()
             .then(() => {
                 return Book.find();
             })
@@ -45,8 +45,8 @@ exports.getallbooks = () => {
 
 // Fetch Three Books
 exports.getThreeBook = () => {
-    return new Promise((resolve, reject) => {
-        connectToDB()
+    return new Promise(async(resolve, reject) => {
+        await connectToDB()
             .then(() => {
                 console.log("Connected with DB from books.js");
                 return Book.find({}).limit(3);
@@ -71,8 +71,8 @@ exports.getBookById = (id) => {
         return Promise.reject("Invalid ID format");
     }
 
-    return new Promise((resolve, reject) => {
-        connectToDB()
+    return new Promise(async(resolve, reject) => {
+        await connectToDB()
             .then(() => {
                 console.log("Connected from DB from books.js");
                 return Book.findById(id);
@@ -100,8 +100,8 @@ exports.addBookFunModel=(title, author,price,description,image,userId)=>{
     //(true go to login)
     //(false add this user to collection)
 
-    return new Promise((resolve,reject)=>{
-        connectToDB()
+    return new Promise(async(resolve,reject)=>{
+        await connectToDB()
         .then(()=>{
             console.log("connected from auth.js add book")
 
@@ -151,7 +151,7 @@ exports.modifyBookFunModel=(id,title, author,price,description,image,userId)=>{
         //(false add this user to collection)
     
         return new Promise(async(resolve,reject)=>{
-            connectToDB()
+            await connectToDB()
             .then(()=>{
                 console.log("connected from auth.js add book")
     
@@ -188,8 +188,8 @@ exports.modifyBookFunModel=(id,title, author,price,description,image,userId)=>{
     
 
 exports.getmybooks = (id) => {
-    return new Promise((resolve, reject) => {
-        connectToDB()
+    return new Promise(async(resolve, reject) => {
+        await connectToDB()
             .then(() => {
                 return Book.find({userId:id});
             })
@@ -208,8 +208,8 @@ exports.getmybooks = (id) => {
 };
 
 exports.deletemybooks = (id) => {
-    return new Promise((resolve, reject) => {
-        connectToDB()
+    return new Promise(async(resolve, reject) => {
+        await connectToDB()
             .then(() => {
                 return Book.deleteOne({_id:id});
             })
